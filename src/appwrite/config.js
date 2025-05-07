@@ -98,14 +98,14 @@ export class Service {
 
   async uploadFile(file) {
     try {
-      const file = await this.bucket.createFile(
+      const uploadedfile = await this.bucket.createFile(
         conf.appwriteBucketId,
         ID.unique(),
         file,
         [Permission.read(Role.any())]
       );
-      console.log("uploaded file: ", file)
-      return file;
+      console.log("uploaded file: ", uploadedfile)
+      return uploadedfile;
     } catch (error) {
       console.log("appwrite service :: uploadFile :: error: ", error);
       return false;
