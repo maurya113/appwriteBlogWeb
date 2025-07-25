@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Logo, LogoutBtn} from "../index"
+import { Container, Logo, LogoutBtn } from "../index"
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +12,7 @@ export default function Header() {
         {
             name: 'Home',
             slug: "/",
-            active: true 
+            active: true
         },
         {
             name: 'Login',
@@ -36,29 +36,29 @@ export default function Header() {
         }
     ]
 
-    return(
+    return (
         <header className='py-3 shadow bg-gray-500'>
             <Container>
-                <nav className='flex'>
+                <nav className='flex flex-col sm:flex-row sm:items-center'>
                     <div className='mr-4'>
                         <Link to="/">
-                            <Logo width='70px' imgSrc='/blog.png'/>
+                            <Logo width='70px' imgSrc='/blog.png' />
                         </Link>
                     </div>
-                    <ul className='flex ml-auto'>
-                        {navItems.map((item)=>
+                    <ul className='flex flex-wrap gap-2 sm:ml-auto items-center justify-center sm:justify-end'>
+                        {navItems.map((item) =>
                             item.active ? (
                                 <li key={item.name}>
                                     <button
-                                    onClick={()=> navigate(item.slug)}
-                                    className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
+                                        onClick={() => navigate(item.slug)}
+                                        className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
                                     >{item.name}</button>
                                 </li>
                             ) : null
                         )}
-                        { authStatus && (
+                        {authStatus && (
                             <li>
-                                <LogoutBtn/>
+                                <LogoutBtn />
                             </li>
                         )}
                     </ul>
