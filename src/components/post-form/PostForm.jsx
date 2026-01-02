@@ -12,7 +12,7 @@ function PostForm({ post }) {
             title: post?.title || "",
             content: post?.content || "",
             slug: post?.slug || "",
-            status: post?.status || "active "
+            status: post?.status || "active"
         }
     })
 
@@ -60,74 +60,74 @@ function PostForm({ post }) {
             return value
                 .trim()
                 .toLowerCase()
-                .replace(/[^a-z0-9\s-]/g, '')  
-                .replace(/\s+/g, '-') 
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
                 .replace(/-+/g, '-');
-        }else{
+        } else {
             return ''
         }
-         // if no value is passed then return empty string
+        // if no value is passed then return empty string
     }, [])
 
-   React.useEffect(()=>{
-        watch((value, {name})=>{
-            if(name === 'title'){
-                setValue('slug', slugTransform(value.title),{shouldValidate: true})
+    React.useEffect(() => {
+        watch((value, { name }) => {
+            if (name === 'title') {
+                setValue('slug', slugTransform(value.title), { shouldValidate: true })
             }
         })
-   }, [watch, slugTransform, setValue]) 
+    }, [watch, slugTransform, setValue])
 
     return (
-        <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-           <div className="w-2/3 px-2">
-            <Input
-            label="Title: "
-            placeholder="Title"
-            className="mb-4"
-            {...register("title", {required: "title is required"})}
-            />
-
-            <Input
-            label="Slug: "
-            placeholder="Slug"
-            className="mb-4"
-            {...register("slug", {required: "this is an auto-generated field"})}
-            onInput={(e) => {
-                setValue('slug', slugTransform(e.currentTarget.value), {shouldValidate: true})
-            }}
-            // this also allow user input and user input is also transformed as slug
-            />
-            <RTE label="Content: " name="content" control={control} defaultValue={getValues("content")} />
-           </div>
-
-           <div className="w-1/3 px-2">
-           <Input
-           label="Featured Image: "
-           type="file"
-           className="mb-4"
-           accept="image/png, image/jpg, image/jpeg, image/gif, image/webp"
-           {...register("image", {required: !post})}
-           />
-
-           {post && (
-            <div className="w-full mb-4">
-                <img
-                src={service.getFilePreview(post.featuredImage)}
-                alt={post.title}
-                className="rounded-lg max-w-full h-auto"
+        <form onSubmit={handleSubmit(submit, (errors) => console.log("form errors: ", errors))} className="flex flex-wrap">
+            <div className="w-2/3 px-2">
+                <Input
+                    label="Title: "
+                    placeholder="Title"
+                    className="mb-4"
+                    {...register("title", { required: "title is required" })}
                 />
+
+                <Input
+                    label="Slug: "
+                    placeholder="Slug"
+                    className="mb-4"
+                    {...register("slug", { required: "this is an auto-generated field" })}
+                    onInput={(e) => {
+                        setValue('slug', slugTransform(e.currentTarget.value), { shouldValidate: true })
+                    }}
+                // this also allow user input and user input is also transformed as slug
+                />
+                <RTE label="Content: " name="content" control={control} defaultValue={getValues("content")} />
             </div>
-        
-           )}
-           <Select
-           options={["active", "inactive"]}
-           label="Status: "
-           className="mb-4"
-           {...register("status", {required: true})}
-           />  
-           
-           <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">{post ? "Update" : "Submit"}</Button>
-           </div> 
+
+            <div className="w-1/3 px-2">
+                <Input
+                    label="Featured Image: "
+                    type="file"
+                    className="mb-4"
+                    accept="image/png, image/jpg, image/jpeg, image/gif, image/webp"
+                    {...register("image", { required: !post })}
+                />
+
+                {post && (
+                    <div className="w-full mb-4">
+                        <img
+                            src={service.getFilePreview(post.featuredImage)}
+                            alt={post.title}
+                            className="rounded-lg max-w-full h-auto"
+                        />
+                    </div>
+
+                )}
+                <Select
+                    options={["active", "inactive"]}
+                    label="Status: "
+                    className="mb-4"
+                    {...register("status", { required: true })}
+                />
+
+                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">{post ? "Update" : "Submit"}</Button>
+            </div>
         </form>
     )
 }
